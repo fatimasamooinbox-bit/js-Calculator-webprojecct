@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> JS Calculator</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f2f2f2;
+    }
+
+    .calculator {
+      width: 260px;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ddd;
+    }
+
+    .display {
+      background:whitesmoke;
+      color:black;
+      padding: 15px;
+      font-size: 28px;
+      text-align: right;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    button {
+      padding: 15px;
+      border: none;
+      background: #e0e0e0;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #d5d5d5;
+    }
+
+    .op {
+      background:plum;
+      color: white;
+    }
+
+    .op:hover {
+      background: #ffa726;
+    }
+
+    .equal {
+      background: #4caf50;
+      color: white;
+    }
+
+    .equal:hover {
+      background: #43a047;
+    }
+
+    .clear {
+      background: #e57373;
+      color: white;
+    }
+
+    .clear:hover {
+      background: #ef5350;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="display" id="output">0</div>
+
+    <div class="keys">
+      <button class="clear" onclick="clearAll()">C</button>
+      <button disabled></button>
+      <button disabled></button>
+      <button class="op" onclick="pressOperator('/')">/</button>
+
+      <button onclick="pressDigit('7')">7</button>
+      <button onclick="pressDigit('8')">8</button>
+      <button onclick="pressDigit('9')">9</button>
+      <button class="op" onclick="pressOperator('*')">*</button>
+
+      <button onclick="pressDigit('4')">4</button>
+      <button onclick="pressDigit('5')">5</button>
+      <button onclick="pressDigit('6')">6</button>
+      <button class="op" onclick="pressOperator('-')">-</button>
+
+      <button onclick="pressDigit('1')">1</button>
+      <button onclick="pressDigit('2')">2</button>
+      <button onclick="pressDigit('3')">3</button>
+      <button class="op" onclick="pressOperator('+')">+</button>
+
+      <button onclick="pressDigit('0')" style="grid-column: span 2;">0</button>
+      <button disabled></button>
+      <button class="equal" onclick="pressEquals()">=</button>
+    </div>
+  </div>
+
+  <script>
+    let current = '0';
+    let previous = null;
+    let operator = null;
+
+    const outputEl = document.getElementById('output');
+
+    function updateDisplay() {
+      outputEl.textContent = current;
+    }
+
+    function pressDigit(d) {
+      if (current === '0') current = d;
+      else current = current + d;
+      updateDisplay();
+    }
+
+    function pressOperator(op) {
+      previous = parseFloat(current);
+      operator = op;
+      current = '0';
+      updateDisplay();
+    }
+
+    function pressEquals() {
+      if (operator === null || previous === null) return;
+
+      const a = previous;
+      const b = parseFloat(current);
+      let result = 0;
+
+      if (operator === '+') result = a + b;
+      if (operator === '-') result = a - b;
+      if (operator === '*') result = a * b;
+      if (operator === '/') result = b === 0 ? "Error" : a / b;
+
+      current = String(result);
+      previous = null;
+      operator = null;
+      updateDisplay();
+    }
+
+    function clearAll() {
+      current = '0';
+      previous = null;
+      operator = null;
+      updateDisplay();
+    }
+  </script>
+
+</body>
+</html>
